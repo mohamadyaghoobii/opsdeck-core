@@ -1,16 +1,17 @@
 services:
   db:
     image: postgres:16-alpine
+    restart: unless-stopped
     environment:
-      POSTGRES_DB: opsdeck
-      POSTGRES_USER: opsdeck
-      POSTGRES_PASSWORD: opsdeck
+      POSTGRES_DB: ${POSTGRES_DB:-opsdeck}
+      POSTGRES_USER: ${POSTGRES_USER:-opsdeck}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-opsdeck}
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5432}:5432"
     volumes:
       - opsdeck_db:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U opsdeck -d opsdeck"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-opsdeck} -d ${POSTGRES_DB:-opsdeck}"]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -18,25 +19,33 @@ services:
   api:
     build:
       context: ./apps/api
+    restart: unless-stopped
     environment:
-      APP_ENV: development
-      DATABASE_URL: postgresql+psycopg://opsdeck:opsdeck@db:5432/opsdeck
-      CORS_ORIGINS: http://localhost:3000
+      APP_ENV: ${APP_ENV:-development}
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-opsdeck}:${POSTGRES_PASSWORD:-opsdeck}@db:5432/${POSTGRES_DB:-opsdeck}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
     ports:
-      - "8000:8000"
+      - "${API_PORT:-8000}:8000"
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0) if urllib.request.urlopen('http://localhost:8000/ready').status==200 else sys.exit(1)\""]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
 
   web:
     build:
       context: ./apps/web
       args:
-        NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8000}
+    restart: unless-stopped
     environment:
-      NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8000}
     ports:
-      - "3000:3000"
+      - "${WEB_PORT:-3000}:3000"
     depends_on:
       - api
 

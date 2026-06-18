@@ -1,56 +1,144 @@
-<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1280" height="720" fill="#080713"/>
-  <circle cx="1050" cy="50" r="360" fill="#6d31c9" opacity="0.28"/>
-  <rect x="24" y="24" width="232" height="672" rx="24" fill="#110d22" stroke="#3a285f"/>
-  <circle cx="56" cy="68" r="8" fill="#c56cff"/>
-  <text x="76" y="77" fill="#ffffff" font-size="28" font-family="Arial" font-weight="700">OpsDeck</text>
-  <text x="48" y="122" fill="#a898c8" font-size="15" font-family="Arial">DevOps control room</text>
-  <g fill="#b9a9d7" font-family="Arial" font-size="18" font-weight="700">
-    <text x="50" y="190">Overview</text>
-    <text x="50" y="240">Projects</text>
-    <text x="50" y="290">Modules</text>
-    <text x="50" y="340">Scans</text>
-    <text x="50" y="390">Findings</text>
-  </g>
-  <text x="304" y="92" fill="#ff72d2" font-size="14" font-family="Arial" font-weight="700" letter-spacing="4">CONTROL ROOM</text>
-  <text x="304" y="154" fill="#ffffff" font-size="58" font-family="Arial" font-weight="800">OpsDeck</text>
-  <text x="304" y="198" fill="#b9a9d7" font-size="20" font-family="Arial">Projects, scans, findings, and module health in one place.</text>
-  <rect x="1042" y="76" width="142" height="40" rx="20" fill="#113d2c"/>
-  <text x="1064" y="102" fill="#77f5b2" font-size="16" font-family="Arial" font-weight="700">API connected</text>
+<svg width="1320" height="820" viewBox="0 0 1320 820" fill="none" xmlns="http://www.w3.org/2000/svg" font-family="Inter, Segoe UI, Arial, sans-serif">
+  <rect width="1320" height="820" fill="#0a0e14"/>
+
+  <!-- Sidebar -->
+  <rect x="0" y="0" width="248" height="820" fill="#0c111a"/>
+  <line x1="248" y1="0" x2="248" y2="820" stroke="#1d2632"/>
+  <rect x="22" y="26" width="30" height="30" rx="8" fill="#4f8cff"/>
+  <path d="M37 33 L31 35.5 V40 c0 3.5 2.4 6 6 7 c3.6 -1 6 -3.5 6 -7 V35.5 Z" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linejoin="round"/>
+  <text x="62" y="40" fill="#e6edf5" font-size="16" font-weight="700">OpsDeck</text>
+  <text x="62" y="54" fill="#5d6877" font-size="11">Control plane</text>
+
+  <text x="30" y="98" fill="#5d6877" font-size="10.5" font-weight="700" letter-spacing="1.2">PLATFORM</text>
+  <rect x="18" y="108" width="212" height="34" rx="8" fill="#11233f"/>
+  <text x="44" y="130" fill="#e6edf5" font-size="13" font-weight="600">Overview</text>
+  <text x="44" y="166" fill="#8b97a8" font-size="13">Projects</text>
+  <text x="44" y="200" fill="#8b97a8" font-size="13">Modules</text>
+
+  <text x="30" y="240" fill="#5d6877" font-size="10.5" font-weight="700" letter-spacing="1.2">OPERATIONS</text>
+  <text x="44" y="272" fill="#8b97a8" font-size="13">Runs</text>
+  <text x="44" y="306" fill="#8b97a8" font-size="13">Findings</text>
+
+  <text x="30" y="346" fill="#5d6877" font-size="10.5" font-weight="700" letter-spacing="1.2">PLATFORM</text>
+  <text x="44" y="378" fill="#8b97a8" font-size="13">Roadmap</text>
+  <text x="44" y="412" fill="#8b97a8" font-size="13">System status</text>
+
+  <line x1="18" y1="760" x2="230" y2="760" stroke="#1d2632"/>
+  <text x="22" y="784" fill="#5d6877" font-size="11.5">OpsDeck core v0.2.0</text>
+
+  <!-- Header -->
+  <text x="288" y="50" fill="#e6edf5" font-size="20" font-weight="700">Overview</text>
+  <text x="288" y="74" fill="#8b97a8" font-size="13">Platform posture across projects, modules, and findings.</text>
+  <rect x="1118" y="30" width="170" height="34" rx="17" fill="#111722" stroke="#283242"/>
+  <circle cx="1140" cy="47" r="4" fill="#3fb950"/>
+  <text x="1152" y="51" fill="#8b97a8" font-size="12.5">API online</text>
+  <line x1="248" y1="104" x2="1320" y2="104" stroke="#1d2632"/>
+
+  <!-- Stat cards -->
   <g>
-    <rect x="304" y="248" width="204" height="130" rx="22" fill="#1d1632" stroke="#6d31c9"/>
-    <text x="332" y="292" fill="#a898c8" font-size="13" font-family="Arial" font-weight="700" letter-spacing="2">PROJECTS</text>
-    <text x="332" y="342" fill="#ffffff" font-size="42" font-family="Arial" font-weight="800">1</text>
+    <rect x="288" y="132" width="238" height="104" rx="12" fill="#111722" stroke="#1d2632"/>
+    <text x="312" y="166" fill="#8b97a8" font-size="12">Projects</text>
+    <text x="312" y="204" fill="#e6edf5" font-size="30" font-weight="700">2</text>
+    <text x="312" y="224" fill="#5d6877" font-size="11.5">tracked in inventory</text>
   </g>
   <g>
-    <rect x="530" y="248" width="204" height="130" rx="22" fill="#1d1632" stroke="#6d31c9"/>
-    <text x="558" y="292" fill="#a898c8" font-size="13" font-family="Arial" font-weight="700" letter-spacing="2">MODULES</text>
-    <text x="558" y="342" fill="#ffffff" font-size="42" font-family="Arial" font-weight="800">6</text>
+    <rect x="540" y="132" width="238" height="104" rx="12" fill="#111722" stroke="#1d2632"/>
+    <text x="564" y="166" fill="#8b97a8" font-size="12">Modules</text>
+    <text x="564" y="204" fill="#e6edf5" font-size="30" font-weight="700">6</text>
+    <text x="564" y="224" fill="#5d6877" font-size="11.5">registered in control plane</text>
   </g>
   <g>
-    <rect x="756" y="248" width="204" height="130" rx="22" fill="#1d1632" stroke="#6d31c9"/>
-    <text x="784" y="292" fill="#a898c8" font-size="13" font-family="Arial" font-weight="700" letter-spacing="2">SCANS</text>
-    <text x="784" y="342" fill="#ffffff" font-size="42" font-family="Arial" font-weight="800">1</text>
+    <rect x="792" y="132" width="238" height="104" rx="12" fill="#111722" stroke="#1d2632"/>
+    <text x="816" y="166" fill="#8b97a8" font-size="12">Runs</text>
+    <text x="816" y="204" fill="#e6edf5" font-size="30" font-weight="700">3</text>
+    <text x="816" y="224" fill="#5d6877" font-size="11.5">recorded across modules</text>
   </g>
   <g>
-    <rect x="982" y="248" width="204" height="130" rx="22" fill="#1d1632" stroke="#6d31c9"/>
-    <text x="1010" y="292" fill="#a898c8" font-size="13" font-family="Arial" font-weight="700" letter-spacing="2">SCORE</text>
-    <text x="1010" y="342" fill="#ffffff" font-size="42" font-family="Arial" font-weight="800">72</text>
+    <rect x="1044" y="132" width="244" height="104" rx="12" fill="#111722" stroke="#1d2632"/>
+    <text x="1068" y="166" fill="#8b97a8" font-size="12">Open findings</text>
+    <text x="1068" y="204" fill="#e6edf5" font-size="30" font-weight="700">4</text>
+    <text x="1068" y="224" fill="#5d6877" font-size="11.5">5 total · avg score 74.7</text>
   </g>
-  <rect x="304" y="414" width="422" height="224" rx="24" fill="#1d1632" stroke="#3a285f"/>
-  <text x="334" y="458" fill="#ffffff" font-size="24" font-family="Arial" font-weight="800">Module roadmap</text>
-  <rect x="334" y="486" width="360" height="40" rx="12" fill="#151027"/>
-  <rect x="334" y="538" width="360" height="40" rx="12" fill="#151027"/>
-  <rect x="334" y="590" width="360" height="40" rx="12" fill="#151027"/>
-  <text x="354" y="512" fill="#ffffff" font-size="16" font-family="Arial">Kubernetes Review</text>
-  <text x="354" y="564" fill="#ffffff" font-size="16" font-family="Arial">Container Build Review</text>
-  <text x="354" y="616" fill="#ffffff" font-size="16" font-family="Arial">Pipeline Review</text>
-  <rect x="756" y="414" width="430" height="224" rx="24" fill="#1d1632" stroke="#3a285f"/>
-  <text x="786" y="458" fill="#ffffff" font-size="24" font-family="Arial" font-weight="800">Recent findings</text>
-  <rect x="786" y="486" width="368" height="40" rx="12" fill="#151027"/>
-  <rect x="786" y="538" width="368" height="40" rx="12" fill="#151027"/>
-  <rect x="786" y="590" width="368" height="40" rx="12" fill="#151027"/>
-  <text x="806" y="512" fill="#ffffff" font-size="16" font-family="Arial">Container can run as root</text>
-  <text x="806" y="564" fill="#ffffff" font-size="16" font-family="Arial">Missing resource limits</text>
-  <text x="806" y="616" fill="#ffffff" font-size="16" font-family="Arial">Ingress has no TLS policy</text>
+
+  <!-- Severity distribution -->
+  <rect x="288" y="256" width="488" height="208" rx="12" fill="#111722" stroke="#1d2632"/>
+  <text x="312" y="288" fill="#e6edf5" font-size="14" font-weight="600">Severity distribution</text>
+  <text x="688" y="288" fill="#8b97a8" font-size="12">5 findings</text>
+  <line x1="288" y1="304" x2="776" y2="304" stroke="#1d2632"/>
+  <g>
+    <rect x="312" y="330" width="176" height="12" rx="6" fill="#ff8c42"/>
+    <rect x="492" y="330" width="176" height="12" fill="#d29922"/>
+    <rect x="672" y="330" width="88" height="12" rx="6" fill="#58a6ff"/>
+  </g>
+  <g font-size="12.5">
+    <rect x="312" y="372" width="9" height="9" rx="2" fill="#f85149"/>
+    <text x="328" y="381" fill="#8b97a8">Critical</text><text x="384" y="381" fill="#e6edf5" font-weight="700">0</text>
+    <rect x="312" y="398" width="9" height="9" rx="2" fill="#ff8c42"/>
+    <text x="328" y="407" fill="#8b97a8">High</text><text x="368" y="407" fill="#e6edf5" font-weight="700">2</text>
+    <rect x="312" y="424" width="9" height="9" rx="2" fill="#d29922"/>
+    <text x="328" y="433" fill="#8b97a8">Medium</text><text x="386" y="433" fill="#e6edf5" font-weight="700">2</text>
+    <rect x="500" y="372" width="9" height="9" rx="2" fill="#58a6ff"/>
+    <text x="516" y="381" fill="#8b97a8">Low</text><text x="552" y="381" fill="#e6edf5" font-weight="700">1</text>
+    <rect x="500" y="398" width="9" height="9" rx="2" fill="#8b97a8"/>
+    <text x="516" y="407" fill="#8b97a8">Info</text><text x="552" y="407" fill="#e6edf5" font-weight="700">0</text>
+  </g>
+
+  <!-- Module readiness -->
+  <rect x="800" y="256" width="488" height="208" rx="12" fill="#111722" stroke="#1d2632"/>
+  <text x="824" y="288" fill="#e6edf5" font-size="14" font-weight="600">Module readiness</text>
+  <text x="1212" y="288" fill="#8b97a8" font-size="12">6 modules</text>
+  <line x1="800" y1="304" x2="1288" y2="304" stroke="#1d2632"/>
+  <g font-size="13">
+    <text x="824" y="334" fill="#e6edf5" font-weight="600">Report Center</text>
+    <rect x="1188" y="320" width="76" height="22" rx="11" fill="#0f2417" stroke="#1c5331"/>
+    <text x="1204" y="335" fill="#3fb950" font-size="11.5" font-weight="600">Ready</text>
+    <line x1="824" y1="352" x2="1264" y2="352" stroke="#1d2632"/>
+    <text x="824" y="380" fill="#e6edf5" font-weight="600">Observability Review</text>
+    <rect x="1196" y="366" width="68" height="22" rx="11" fill="#11233f" stroke="#274a78"/>
+    <text x="1212" y="381" fill="#4f8cff" font-size="11.5" font-weight="600">Beta</text>
+    <line x1="824" y1="398" x2="1264" y2="398" stroke="#1d2632"/>
+    <text x="824" y="426" fill="#e6edf5" font-weight="600">Kubernetes Review</text>
+    <rect x="1180" y="412" width="84" height="22" rx="11" fill="#0c111a" stroke="#283242"/>
+    <text x="1196" y="427" fill="#8b97a8" font-size="11.5" font-weight="600">Planned</text>
+  </g>
+
+  <!-- Recent runs -->
+  <rect x="288" y="484" width="488" height="200" rx="12" fill="#111722" stroke="#1d2632"/>
+  <text x="312" y="516" fill="#e6edf5" font-size="14" font-weight="600">Recent runs</text>
+  <line x1="288" y1="532" x2="776" y2="532" stroke="#1d2632"/>
+  <g font-size="13">
+    <text x="312" y="560" fill="#e6edf5" font-weight="600">Container Build Review</text>
+    <text x="312" y="578" fill="#8b97a8" font-size="12">Internal Tooling · tooling/Dockerfile</text>
+    <text x="748" y="566" fill="#d29922" font-size="13" font-weight="700" text-anchor="end">64</text>
+    <line x1="312" y1="596" x2="752" y2="596" stroke="#1d2632"/>
+    <text x="312" y="624" fill="#e6edf5" font-weight="600">Observability Review</text>
+    <text x="312" y="642" fill="#8b97a8" font-size="12">Checkout Platform · checkout services</text>
+    <text x="748" y="630" fill="#3fb950" font-size="13" font-weight="700" text-anchor="end">88</text>
+    <line x1="312" y1="660" x2="752" y2="660" stroke="#1d2632"/>
+    <text x="312" y="685" fill="#e6edf5" font-weight="600">Kubernetes Review</text>
+  </g>
+
+  <!-- Recent findings -->
+  <rect x="800" y="484" width="488" height="200" rx="12" fill="#111722" stroke="#1d2632"/>
+  <text x="824" y="516" fill="#e6edf5" font-size="14" font-weight="600">Recent findings</text>
+  <text x="1252" y="516" fill="#8b97a8" font-size="12" text-anchor="end">4 open</text>
+  <line x1="800" y1="532" x2="1288" y2="532" stroke="#1d2632"/>
+  <g font-size="13">
+    <text x="824" y="560" fill="#e6edf5" font-weight="600">Base image is outdated</text>
+    <text x="824" y="578" fill="#8b97a8" font-size="12">Container Build Review · tooling/Dockerfile</text>
+    <rect x="1196" y="548" width="68" height="22" rx="11" fill="rgba(255,140,66,0.12)" stroke="#5c3a1e"/>
+    <text x="1212" y="563" fill="#ff8c42" font-size="11.5" font-weight="600">High</text>
+    <line x1="824" y1="596" x2="1264" y2="596" stroke="#1d2632"/>
+    <text x="824" y="624" fill="#e6edf5" font-weight="600">Container can run as root</text>
+    <text x="824" y="642" fill="#8b97a8" font-size="12">Kubernetes Review · deployment/api</text>
+    <rect x="1196" y="612" width="68" height="22" rx="11" fill="rgba(255,140,66,0.12)" stroke="#5c3a1e"/>
+    <text x="1212" y="627" fill="#ff8c42" font-size="11.5" font-weight="600">High</text>
+    <line x1="824" y1="660" x2="1264" y2="660" stroke="#1d2632"/>
+    <text x="824" y="685" fill="#e6edf5" font-weight="600">Ingress has no explicit TLS policy</text>
+  </g>
+
+  <!-- Activity strip -->
+  <rect x="288" y="704" width="1000" height="84" rx="12" fill="#111722" stroke="#1d2632"/>
+  <text x="312" y="736" fill="#e6edf5" font-size="14" font-weight="600">Recent activity</text>
+  <text x="312" y="766" fill="#8b97a8" font-size="12.5">New high finding: Base image is outdated · Container Build Review run completed with score 64</text>
 </svg>

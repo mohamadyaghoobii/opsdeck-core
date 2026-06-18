@@ -1,127 +1,136 @@
 # OpsDeck
 
-OpsDeck is the control room for a DevOps and DevSecOps platform. It is the first building block in a modular system that will later include Kubernetes analysis, Dockerfile review, CI/CD auditing, IaC checks, secrets and SBOM review, observability readiness, cloud posture checks, and report generation.
+OpsDeck is the control plane for a modular DevOps and DevSecOps platform. It is the shared foundation that future analyzer modules — Kubernetes, containers, CI/CD, infrastructure as code, secrets, observability, and reporting — plug into.
 
-The goal is simple: give teams one calm place to see projects, scans, findings, module health, recent activity, and remediation progress.
+This repository is the **core platform** only. It provides the dashboard, the data model, and the API contracts that the rest of the platform is built around.
 
 ![OpsDeck dashboard](docs/images/opsdeck-dashboard.svg)
 
-## Why this project exists
+## What OpsDeck is
 
-DevOps work usually gets spread across dashboards, CI tools, cluster views, scanner output, Terraform state, incident notes, and spreadsheet-based reports. OpsDeck is the neutral control plane that brings those signals together.
+A practical control room for platform, SRE, and security teams. It brings together the signals that are normally scattered across CI tools, cluster views, scanner output, and spreadsheets:
 
-This starter is intentionally production-shaped, not a throwaway demo. It includes a FastAPI backend, a Next.js frontend, SQLAlchemy models, Docker files, Docker Compose, seed data, health checks, and a README that Claude or another coding assistant can extend safely.
+- **Projects** — the services and codebases you track.
+- **Modules** — the analyzers registered in the platform.
+- **Runs** — the history of module executions against projects, each with a score.
+- **Findings** — the issues raised by runs, with severity, status, and remediation.
+- **Activity** — a feed of recent platform events.
+- **Overview** — posture at a glance: totals, average score, and severity distribution.
 
-## Name
+## What it is not (yet)
 
-The name **OpsDeck** was chosen because it sounds like a normal engineering product rather than an AI-generated tool name. It suggests a deck, bridge, or control room where operators see the state of the system and act from one place.
+OpsDeck does not perform any analysis itself. The Kubernetes analyzer, Dockerfile/container analyzer, CI/CD auditor, and Terraform/IaC auditor are **separate modules** that will be built in their own repositories and connect through the API contracts defined here. Keeping the core thin is deliberate — it stays a clean, neutral place for modules to report into.
 
-The module vocabulary follows real DevOps language: projects, scans, findings, severity, modules, runbooks, CI/CD, Kubernetes, Terraform, Docker, observability, and cloud posture.
+## Why it exists
 
-## Product scope
-
-OpsDeck is the core platform. It does not try to perform every analysis itself. Instead, it provides the shared base that the later modules will plug into.
-
-Current capabilities:
-
-- Project inventory
-- Module registry
-- Scan history
-- Findings database
-- Severity summaries
-- Module health view
-- Recent activity feed
-- FastAPI backend
-- Next.js frontend
-- PostgreSQL-ready persistence
-- SQLite fallback for local quick start
-- Docker Compose for local full-stack development
-
-Planned modules that will integrate later:
-
-- Kubernetes manifest analyzer
-- Dockerfile analyzer
-- CI/CD pipeline auditor
-- Terraform and IaC auditor
-- Secrets and SBOM reviewer
-- Observability and runbook generator
-- Cloud posture checker
-- Report generator
+DevOps and security work tends to live in many disconnected tools. OpsDeck is the neutral control plane that aggregates results from independent modules into one model — one place to see what is being scanned, what was found, and what still needs attention.
 
 ## Architecture
 
-```mermaid
-flowchart LR
-    Browser[Browser] --> Web[Next.js Web]
-    Web --> API[FastAPI API]
-    API --> DB[(PostgreSQL or SQLite)]
-    API --> Modules[Module Registry]
-    Modules --> Kube[Kubernetes Analyzer]
-    Modules --> Docker[Dockerfile Analyzer]
-    Modules --> CICD[CI/CD Auditor]
-    Modules --> IAC[IaC Auditor]
-    Modules --> Reports[Report Generator]
+![OpsDeck architecture](docs/images/opsdeck-architecture.svg)
+
+The browser talks to a Next.js frontend, which calls a FastAPI control plane, which persists to PostgreSQL (or SQLite for a quick local start). Future analyzer modules are independent services that record runs and findings through the same REST contracts.
+
+```
+Browser  →  Next.js web  →  FastAPI control plane  →  PostgreSQL
+                                     │
+                                     └── Module registry  ←  analyzer modules (future repos)
 ```
 
-## Repository layout
+## Repository structure
 
 ```text
 opsdeck-core
 ├── apps
-│   ├── api
+│   ├── api                  FastAPI control plane
 │   │   ├── app
-│   │   │   ├── api
-│   │   │   ├── core
-│   │   │   ├── db
-│   │   │   ├── models
-│   │   │   ├── schemas
-│   │   │   └── services
-│   │   ├── tests
+│   │   │   ├── api          HTTP routes
+│   │   │   ├── core         settings and shared enums
+│   │   │   ├── db           SQLAlchemy engine and session
+│   │   │   ├── models       ORM entities
+│   │   │   ├── schemas      Pydantic request/response models
+│   │   │   └── services     business logic (overview, runs, findings, seed)
+│   │   ├── tests            pytest suite
 │   │   ├── Dockerfile
+│   │   ├── pyproject.toml
 │   │   └── requirements.txt
-│   └── web
-│       ├── app
-│       ├── components
-│       ├── lib
+│   └── web                  Next.js dashboard
+│       ├── app              App Router pages and states
+│       ├── components       UI building blocks
+│       ├── lib              API client and formatting
 │       ├── Dockerfile
 │       └── package.json
-├── docs
-│   └── images
+├── docs/images             SVG assets used by this README
 ├── docker-compose.yml
 ├── .env.example
 └── README.md
 ```
 
-## Quick start with Docker Compose
+## Tech stack
+
+| Layer    | Technology                                              |
+|----------|---------------------------------------------------------|
+| Frontend | Next.js 14 (App Router), React 18, TypeScript           |
+| Backend  | FastAPI, SQLAlchemy 2.0, Pydantic v2                     |
+| Database | PostgreSQL 16 (SQLite fallback for local quick start)   |
+| Tooling  | Docker Compose, pytest, ESLint                          |
+
+## Features in this core
+
+- Health and readiness endpoints suitable for container probes
+- Platform overview with severity and module-status breakdowns
+- Projects, modules, runs, findings, and activity endpoints
+- Typed Pydantic schemas and a clean service layer
+- Seed data so the dashboard is meaningful on first run
+- Multi-page dashboard with loading, empty, and error states
+- Responsive dark UI built for a control-room feel
+- Docker Compose for the full stack and a pytest suite for the API
+
+## Planned modules
+
+Each of these ships as its own repository and reports into this core:
+
+1. Kubernetes workload analyzer
+2. Dockerfile / container analyzer
+3. CI/CD pipeline auditor
+4. Terraform / IaC auditor
+5. Secrets and SBOM module
+6. Observability and runbook generator
+7. Cloud posture module
+8. Report generator
+
+See the in-app **Roadmap** page for the delivery phases.
+
+## Local development with Docker Compose
 
 ```bash
 cp .env.example .env
-
 docker compose up --build
 ```
 
-Open:
+| Service | URL                          |
+|---------|------------------------------|
+| Web     | http://localhost:3000        |
+| API     | http://localhost:8000        |
+| Docs    | http://localhost:8000/docs   |
+| Health  | http://localhost:8000/health |
 
-```text
-Frontend: http://localhost:3000
-API:      http://localhost:8000
-Docs:     http://localhost:8000/docs
-Health:   http://localhost:8000/health
-```
+Ports can be overridden with `WEB_PORT`, `API_PORT`, and `DB_PORT` in `.env`.
 
-## Quick start without Docker
-
-Start the API:
+## Manual backend setup
 
 ```bash
 cd apps/api
 python -m venv .venv
+# Windows PowerShell: .venv\Scripts\Activate.ps1
 source .venv/bin/activate
 pip install -r requirements.txt
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+uvicorn app.main:app --reload --port 8000
 ```
 
-Start the web app:
+With no `DATABASE_URL` set, the API uses a local SQLite database (`opsdeck.db`) and seeds it on first start.
+
+## Manual frontend setup
 
 ```bash
 cd apps/web
@@ -129,135 +138,103 @@ npm install
 npm run dev
 ```
 
-Open:
-
-```text
-http://localhost:3000
-```
+The web app reads `NEXT_PUBLIC_API_BASE_URL` (default `http://localhost:8000`).
 
 ## Environment variables
 
-| Variable | Used by | Default | Purpose |
-|---|---|---:|---|
-| `DATABASE_URL` | API | `sqlite:///./opsdeck.db` | SQLAlchemy database URL |
-| `APP_ENV` | API | `development` | Runtime environment label |
-| `CORS_ORIGINS` | API | `http://localhost:3000` | Allowed frontend origins |
-| `NEXT_PUBLIC_API_BASE_URL` | Web | `http://localhost:8000` | Browser-side API base URL |
+| Variable                   | Used by | Default                  | Purpose                                   |
+|----------------------------|---------|--------------------------|-------------------------------------------|
+| `APP_ENV`                  | API     | `development`            | Runtime environment label                 |
+| `DATABASE_URL`             | API     | `sqlite:///./opsdeck.db` | SQLAlchemy database URL                    |
+| `CORS_ORIGINS`             | API     | `http://localhost:3000`  | Comma-separated allowed origins           |
+| `POSTGRES_DB/USER/PASSWORD`| db      | `opsdeck`                | Database credentials (Compose)            |
+| `NEXT_PUBLIC_API_BASE_URL` | Web     | `http://localhost:8000`  | Browser-side API base URL                 |
+| `API_PORT/WEB_PORT/DB_PORT`| Compose | `8000/3000/5432`         | Host port mappings                        |
 
-## API overview
+`.env.example` contains safe, non-secret defaults. Do not commit a real `.env`.
 
-| Method | Path | Purpose |
-|---|---|---|
-| `GET` | `/health` | Service health |
-| `GET` | `/api/overview` | Dashboard summary |
-| `GET` | `/api/projects` | Project list |
-| `POST` | `/api/projects` | Create project |
-| `GET` | `/api/modules` | Registered modules |
-| `GET` | `/api/scans` | Recent scans |
-| `POST` | `/api/scans` | Create scan record |
-| `GET` | `/api/findings` | Findings list |
-| `POST` | `/api/findings` | Create finding |
+## API endpoints
+
+| Method | Path                   | Purpose                                   |
+|--------|------------------------|-------------------------------------------|
+| GET    | `/health`              | Liveness and build info                   |
+| GET    | `/ready`               | Readiness (checks database connectivity)  |
+| GET    | `/api/overview`        | Dashboard summary and breakdowns          |
+| GET    | `/api/projects`        | List projects                             |
+| POST   | `/api/projects`        | Create a project                          |
+| GET    | `/api/modules`         | List registered modules                   |
+| GET    | `/api/runs`            | Recent runs (`?limit=`)                   |
+| POST   | `/api/runs`            | Record a run                              |
+| GET    | `/api/findings`        | List findings (`?severity=`, `?status=`)  |
+| POST   | `/api/findings`        | Create a finding                          |
+| GET    | `/api/activity`        | Recent platform events                    |
+| GET    | `/api/settings/status` | Effective runtime configuration           |
+
+Interactive docs are available at `/docs` (Swagger) and `/redoc`.
 
 ## Data model
 
-```mermaid
-erDiagram
-    PROJECT ||--o{ SCAN : has
-    SCAN ||--o{ FINDING : produces
-    MODULE ||--o{ SCAN : runs
-
-    PROJECT {
-        string id
-        string name
-        string owner
-        string environment
-        datetime created_at
-    }
-
-    MODULE {
-        string id
-        string name
-        string slug
-        string status
-        string category
-    }
-
-    SCAN {
-        string id
-        string project_id
-        string module_id
-        string status
-        int score
-        datetime created_at
-    }
-
-    FINDING {
-        string id
-        string scan_id
-        string title
-        string severity
-        string resource
-        string recommendation
-    }
+```text
+Project ──< Run ──< Finding
+  │          │         │
+Module ──────┴─────────┘   (Run and Finding reference their source module)
+ActivityEvent (optional link to a Project)
 ```
 
-## Development workflow
+- **Run**: project, module, target, status, score, summary, started/completed time.
+- **Finding**: title, description, severity, status, source module, affected target, remediation, created time.
 
-Create a branch:
+## Testing
 
-```bash
-git checkout -b feature/opsdeck-core
-```
-
-Run checks:
+Backend:
 
 ```bash
 cd apps/api
+pip install -r requirements.txt
 python -m pytest
-python -m py_compile app/main.py
+```
 
-cd ../web
+Frontend:
+
+```bash
+cd apps/web
 npm run lint
 npm run build
 ```
 
-Commit:
+Docker configuration:
 
 ```bash
-git add .
-git commit -m "Add OpsDeck core platform"
+docker compose config
 ```
 
-Push:
+## Roadmap
 
-```bash
-git remote add origin https://github.com/YOUR_USER/opsdeck-core.git
-git push -u origin feature/opsdeck-core
-```
+The platform grows in phases: this core first, then one analyzer module at a time, and finally a report generator that aggregates across modules. The full list lives in [Planned modules](#planned-modules) and on the in-app Roadmap page.
 
-## How this should evolve
+Near-term core improvements worth picking up next:
 
-Suggested next steps:
+1. Alembic migrations instead of `create_all`
+2. Authentication and workspace membership
+3. Module-to-module API contracts and an ingestion endpoint for analyzers
+4. Background workers for long-running runs
+5. Report export to Markdown and HTML
+6. Audit logging and role-based access control
 
-1. Add authentication and workspace membership.
-2. Add real migrations with Alembic.
-3. Add module-to-module API contracts.
-4. Add upload storage for manifests, Dockerfiles, and pipeline YAML.
-5. Add report export to Markdown and HTML.
-6. Add GitHub issue export.
-7. Add background workers for long-running scans.
-8. Add audit logging.
-9. Add role-based access control.
-10. Add a real deployment guide for Liara, Kubernetes, and Docker Compose.
+## Contributing
 
-## Claude handoff prompt
+1. Create a feature branch: `git checkout -b feature/your-change`
+2. Keep changes typed and focused; run the backend tests and frontend lint/build before opening a PR.
+3. Avoid adding secrets, real credentials, or generated artifacts (databases, `node_modules`, `.venv`).
 
-Use this prompt when sending the project to Claude:
+## Security
 
-```text
-You are continuing the OpsDeck core platform. This repo is the shared control plane for a larger DevOps and DevSecOps portal. Keep the product name OpsDeck. Improve the codebase without turning it into a demo. Preserve the FastAPI backend, Next.js frontend, SQLAlchemy persistence, Docker Compose setup, and modular architecture. Add production-ready structure, stronger tests, better UI states, cleaner API contracts, and a path for future analyzer modules. Avoid hardcoded lab values. Keep README updates in English. Make the project feel like a real internal platform used by DevOps teams.
-```
+- No secrets are committed. `.env.example` holds safe defaults only.
+- CORS origins are configured through `CORS_ORIGINS` rather than wildcarded in code.
+- This is a starter; before production use add authentication, real migrations, and access control (see Roadmap).
 
-## Status
+Found a security issue? Please open a private report rather than a public issue.
 
-This is a complete starter core. It is ready to open in VS Code, run locally, push to GitHub, and then expand with the next module.
+## License
+
+No license has been chosen yet. Until a `LICENSE` file is added, all rights are reserved by the repository owner.

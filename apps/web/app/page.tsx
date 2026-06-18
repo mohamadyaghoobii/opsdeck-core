@@ -1,87 +1,156 @@
-import { MetricCard, Pill } from "@/components/Cards";
-import { Shell } from "@/components/Shell";
-import { getFindings, getModules, getOverview, getProjects, getScans } from "@/lib/api";
+import { PageHeader } from "@/components/PageHeader";
+import { SeverityBar } from "@/components/SeverityBar";
+import { Icon } from "@/components/icons";
+import {
+  Card,
+  CardHeader,
+  EmptyState,
+  ErrorState,
+  ModuleStatusBadge,
+  ScoreValue,
+  SeverityBadge,
+  StatCard,
+} from "@/components/ui";
+import { getActivity, getFindings, getModules, getOverview, getRuns, unwrap } from "@/lib/api";
+import { relativeTime } from "@/lib/format";
 
-function toneForSeverity(severity: string) {
-  if (["critical", "high"].includes(severity.toLowerCase())) return "bad" as const;
-  if (severity.toLowerCase() === "medium") return "warn" as const;
-  return "neutral" as const;
-}
-
-export default async function Home() {
-  const [overview, projects, modules, scans, findings] = await Promise.all([
-    getOverview(), getProjects(), getModules(), getScans(), getFindings()
+export default async function OverviewPage() {
+  const [overviewResult, modulesResult, runsResult, findingsResult, activityResult] = await Promise.all([
+    getOverview(),
+    getModules(),
+    getRuns(),
+    getFindings(),
+    getActivity(),
   ]);
 
+  if (!overviewResult.ok) {
+    return (
+      <>
+        <PageHeader title="Overview" subtitle="Platform posture across projects, modules, and findings." />
+        <div className="page-body">
+          <ErrorState message={overviewResult.error} />
+        </div>
+      </>
+    );
+  }
+
+  const overview = overviewResult.data;
+  const modules = unwrap(modulesResult, []);
+  const runs = unwrap(runsResult, []).slice(0, 5);
+  const findings = unwrap(findingsResult, []).slice(0, 5);
+  const activity = unwrap(activityResult, []).slice(0, 6);
+
   return (
-    <Shell>
-      <div className="hero">
-        <div>
-          <p className="eyebrow">Control room</p>
-          <h1>OpsDeck</h1>
-          <p>Track projects, scan history, module health, and remediation progress from one platform dashboard.</p>
-        </div>
-        <div className="apiState">API connected</div>
+    <>
+      <PageHeader title="Overview" subtitle="Platform posture across projects, modules, and findings." />
+      <div className="page-body">
+        <section className="grid cols-4">
+          <StatCard icon="projects" label="Projects" value={overview.projects} hint="tracked in inventory" />
+          <StatCard icon="modules" label="Modules" value={overview.modules} hint="registered in control plane" />
+          <StatCard icon="runs" label="Runs" value={overview.runs} hint="recorded across modules" />
+          <StatCard
+            icon="findings"
+            label="Open findings"
+            value={overview.open_findings}
+            hint={`${overview.findings} total · avg score ${overview.average_score}`}
+          />
+        </section>
+
+        <section className="grid cols-2">
+          <Card>
+            <CardHeader title="Severity distribution" meta={`${overview.findings} findings`} />
+            <div className="card-pad">
+              <SeverityBar breakdown={overview.severity_breakdown} />
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Module readiness" meta={`${modules.length} modules`} />
+            <div className="rows">
+              {modules.length === 0 ? (
+                <EmptyState title="No modules" message="No modules are registered yet." />
+              ) : (
+                modules.map((module) => (
+                  <div className="list-row" key={module.id}>
+                    <div>
+                      <div className="primary">{module.name}</div>
+                      <div className="secondary">{module.category}</div>
+                    </div>
+                    <ModuleStatusBadge status={module.status} />
+                  </div>
+                ))
+              )}
+            </div>
+          </Card>
+        </section>
+
+        <section className="grid cols-2">
+          <Card>
+            <CardHeader title="Recent runs" meta={`${runs.length} shown`} />
+            <div className="rows">
+              {runs.length === 0 ? (
+                <EmptyState title="No runs yet" message="Module runs will appear here once recorded." />
+              ) : (
+                runs.map((run) => (
+                  <div className="list-row" key={run.id}>
+                    <div>
+                      <div className="primary">{run.module_name}</div>
+                      <div className="secondary">
+                        {run.project_name} · <code>{run.target || "—"}</code>
+                      </div>
+                    </div>
+                    <ScoreValue score={run.score} />
+                  </div>
+                ))
+              )}
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Recent findings" meta={`${overview.open_findings} open`} />
+            <div className="rows">
+              {findings.length === 0 ? (
+                <EmptyState title="No findings" message="Findings from module runs will show up here." />
+              ) : (
+                findings.map((finding) => (
+                  <div className="list-row" key={finding.id}>
+                    <div>
+                      <div className="primary">{finding.title}</div>
+                      <div className="secondary">
+                        {finding.module_name} · <code>{finding.target || "—"}</code>
+                      </div>
+                    </div>
+                    <SeverityBadge severity={finding.severity} />
+                  </div>
+                ))
+              )}
+            </div>
+          </Card>
+        </section>
+
+        <section>
+          <Card>
+            <CardHeader title="Recent activity" meta="Latest platform events" />
+            <div className="activity">
+              {activity.length === 0 ? (
+                <EmptyState title="No activity" message="Platform events will be recorded here." />
+              ) : (
+                activity.map((event) => (
+                  <div className="activity-item" key={event.id}>
+                    <span className="activity-icon">
+                      <Icon name={event.kind.startsWith("finding") ? "findings" : "runs"} />
+                    </span>
+                    <div>
+                      <div className="activity-msg">{event.message}</div>
+                      <div className="activity-time">{relativeTime(event.created_at)}</div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </Card>
+        </section>
       </div>
-
-      <section className="grid four">
-        <MetricCard label="Projects" value={overview.projects} hint="active workspaces" />
-        <MetricCard label="Modules" value={overview.modules} hint="registered analyzers" />
-        <MetricCard label="Scans" value={overview.scans} hint="recorded runs" />
-        <MetricCard label="Average Score" value={overview.average_score} hint="latest posture" />
-      </section>
-
-      <section className="grid two">
-        <div className="card">
-          <div className="sectionHead"><h2>Module roadmap</h2><span>{modules.length} modules</span></div>
-          <div className="list">
-            {modules.map((item) => (
-              <div className="row" key={item.id}>
-                <div><strong>{item.name}</strong><small>{item.summary}</small></div>
-                <Pill tone={item.status === "ready" ? "good" : "neutral"}>{item.status}</Pill>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="card">
-          <div className="sectionHead"><h2>Recent findings</h2><span>{overview.findings} total</span></div>
-          <div className="list">
-            {findings.map((item) => (
-              <div className="row" key={item.id}>
-                <div><strong>{item.title}</strong><small>{item.resource}</small></div>
-                <Pill tone={toneForSeverity(item.severity)}>{item.severity}</Pill>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="grid two">
-        <div className="card">
-          <div className="sectionHead"><h2>Projects</h2><span>{projects.length} tracked</span></div>
-          <div className="list">
-            {projects.map((item) => (
-              <div className="row" key={item.id}>
-                <div><strong>{item.name}</strong><small>{item.owner}</small></div>
-                <Pill>{item.environment}</Pill>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="card">
-          <div className="sectionHead"><h2>Latest scans</h2><span>{scans.length} shown</span></div>
-          <div className="list">
-            {scans.map((item) => (
-              <div className="row" key={item.id}>
-                <div><strong>{item.target}</strong><small>{item.module_name} · {item.project_name}</small></div>
-                <Pill tone={item.score >= 80 ? "good" : item.score >= 60 ? "warn" : "bad"}>{item.score}</Pill>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    </Shell>
+    </>
   );
 }
