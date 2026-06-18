@@ -1,0 +1,56 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="720" fill="#080713"/>
+  <circle cx="1050" cy="50" r="360" fill="#6d31c9" opacity="0.28"/>
+  <rect x="24" y="24" width="232" height="672" rx="24" fill="#110d22" stroke="#3a285f"/>
+  <circle cx="56" cy="68" r="8" fill="#c56cff"/>
+  <text x="76" y="77" fill="#ffffff" font-size="28" font-family="Arial" font-weight="700">OpsDeck</text>
+  <text x="48" y="122" fill="#a898c8" font-size="15" font-family="Arial">DevOps control room</text>
+  <g fill="#b9a9d7" font-family="Arial" font-size="18" font-weight="700">
+    <text x="50" y="190">Overview</text>
+    <text x="50" y="240">Projects</text>
+    <text x="50" y="290">Modules</text>
+    <text x="50" y="340">Scans</text>
+    <text x="50" y="390">Findings</text>
+  </g>
+  <text x="304" y="92" fill="#ff72d2" font-size="14" font-family="Arial" font-weight="700" letter-spacing="4">CONTROL ROOM</text>
+  <text x="304" y="154" fill="#ffffff" font-size="58" font-family="Arial" font-weight="800">OpsDeck</text>
+  <text x="304" y="198" fill="#b9a9d7" font-size="20" font-family="Arial">Projects, scans, findings, and module health in one place.</text>
+  <rect x="1042" y="76" width="142" height="40" rx="20" fill="#113d2c"/>
+  <text x="1064" y="102" fill="#77f5b2" font-size="16" font-family="Arial" font-weight="700">API connected</text>
+  <g>
+    <rect x="304" y="248" width="204" height="130" rx="22" fill="#1d1632" stroke="#6d31c9"/>
+    <text x="332" y="292" fill="#a898c8" font-size="13" font-family="Arial" font-weight="700" letter-spacing="2">PROJECTS</text>
+    <text x="332" y="342" fill="#ffffff" font-size="42" font-family="Arial" font-weight="800">1</text>
+  </g>
+  <g>
+    <rect x="530" y="248" width="204" height="130" rx="22" fill="#1d1632" stroke="#6d31c9"/>
+    <text x="558" y="292" fill="#a898c8" font-size="13" font-family="Arial" font-weight="700" letter-spacing="2">MODULES</text>
+    <text x="558" y="342" fill="#ffffff" font-size="42" font-family="Arial" font-weight="800">6</text>
+  </g>
+  <g>
+    <rect x="756" y="248" width="204" height="130" rx="22" fill="#1d1632" stroke="#6d31c9"/>
+    <text x="784" y="292" fill="#a898c8" font-size="13" font-family="Arial" font-weight="700" letter-spacing="2">SCANS</text>
+    <text x="784" y="342" fill="#ffffff" font-size="42" font-family="Arial" font-weight="800">1</text>
+  </g>
+  <g>
+    <rect x="982" y="248" width="204" height="130" rx="22" fill="#1d1632" stroke="#6d31c9"/>
+    <text x="1010" y="292" fill="#a898c8" font-size="13" font-family="Arial" font-weight="700" letter-spacing="2">SCORE</text>
+    <text x="1010" y="342" fill="#ffffff" font-size="42" font-family="Arial" font-weight="800">72</text>
+  </g>
+  <rect x="304" y="414" width="422" height="224" rx="24" fill="#1d1632" stroke="#3a285f"/>
+  <text x="334" y="458" fill="#ffffff" font-size="24" font-family="Arial" font-weight="800">Module roadmap</text>
+  <rect x="334" y="486" width="360" height="40" rx="12" fill="#151027"/>
+  <rect x="334" y="538" width="360" height="40" rx="12" fill="#151027"/>
+  <rect x="334" y="590" width="360" height="40" rx="12" fill="#151027"/>
+  <text x="354" y="512" fill="#ffffff" font-size="16" font-family="Arial">Kubernetes Review</text>
+  <text x="354" y="564" fill="#ffffff" font-size="16" font-family="Arial">Container Build Review</text>
+  <text x="354" y="616" fill="#ffffff" font-size="16" font-family="Arial">Pipeline Review</text>
+  <rect x="756" y="414" width="430" height="224" rx="24" fill="#1d1632" stroke="#3a285f"/>
+  <text x="786" y="458" fill="#ffffff" font-size="24" font-family="Arial" font-weight="800">Recent findings</text>
+  <rect x="786" y="486" width="368" height="40" rx="12" fill="#151027"/>
+  <rect x="786" y="538" width="368" height="40" rx="12" fill="#151027"/>
+  <rect x="786" y="590" width="368" height="40" rx="12" fill="#151027"/>
+  <text x="806" y="512" fill="#ffffff" font-size="16" font-family="Arial">Container can run as root</text>
+  <text x="806" y="564" fill="#ffffff" font-size="16" font-family="Arial">Missing resource limits</text>
+  <text x="806" y="616" fill="#ffffff" font-size="16" font-family="Arial">Ingress has no TLS policy</text>
+</svg>
